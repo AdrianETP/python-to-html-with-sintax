@@ -1,0 +1,22 @@
+*{
+    background-color: #292c34;
+    font-family:'monospace';
+    font-size: 20px;
+}
+
+.RESERVED{
+    color:#c678dd;
+}
+.IDENTIFIER{
+    color:white;
+}
+.EQUALITY{
+    color:#575d66;
+}
+.NUMBER{
+    color:#d19a66;
+}
+
+.BOOL{
+    color:#d19a66;
+}
