@@ -13,10 +13,52 @@
 .EQUALITY{
     color:#575d66;
 }
+.OPERATOR{
+    color:#575d66;
+}
+
+.INEQUALITY{
+    color:#575d66;
+}
 .NUMBER{
     color:#d19a66;
 }
 
 .BOOL{
+    color:#94691d;
+}
+.PARENTHESIS{
+    color:#bd2221;
+    font-weight: bold;
+}
+.BRACKETS{
+    color:#56b7c3;
+    font-weight: bold;
+}
+
+.STRING{
+    color:#99c379;
+}
+.DOT {
+    color:#848b98;
+}
+.COLON{
+    color:#848b98;
+}
+.COMMA{
+    color:#848b98;
+}
+
+.SEMICOLON{
+    color:#848b98;
+}
+.FLOAT{
     color:#d19a66;
+}
+.COMMENT{
+    color:gray;
+}
+
+.LONG_COMMENT{
+    color:gray;
 }

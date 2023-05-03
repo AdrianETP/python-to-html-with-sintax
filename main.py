@@ -2,11 +2,31 @@ import re
 import webbrowser
 import time
 
-code = """
+code = r'''
 def main():
     x = 2
     print(x)
+    y = True
+    z = "hola"
+    if z != y:
+        print("not equal")
+    # esto es un comentario
+a = {
+    "a": 1,
+    "b": 2,
+    "c": 3
+}
+if a["a"] >= 1:
+    print("greater")
+
 """
+hola esto es otro comentario jalsjda
+"""
+
+
+
+
+'''
 
 
 def py_to_html(value, kind):
@@ -34,6 +54,8 @@ def tokenize(text):
                 }
     # expresiones regulares
     token_especifications = [
+        ('COMMENT', r'#.*'),
+        ('LONG_COMMENT', r''),
         ('NUMBER', r'\b\d+'),
         ('STRING', r'"[^"]*"|\'[^\']*\''),
         ('BOOL', r'True|False'),
@@ -43,15 +65,17 @@ def tokenize(text):
         ('OPERATOR', r'[+]|[-]|[*]|[/]'),
         ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z_0-9]*'),
         ('PARENTHESIS', r'([(]|[)])',),
-        ('BRACKETS', r'[{]|[}]|[\[][\]]'),
+        ('BRACKETS', r'[{]|[}]|[\[]|[\]]'),
+        ('COMMA', r'[,]'),
+        ('SEMICOLON', r'[;]'),
+        ('DOT', r'[.]'),
+        ('COLON', r'[:]'),
         ('NEWLINE', r'\n'),
         ('WHITESPACE', r'\s'),
     ]
-    x = True
+
     # regex de busqueda con identificadores de cada regex
     tok_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_especifications)
-    print("kind, value , Start, End")
-    print("---------------------------------")
     # iteracion de cada palabra para encontrar que tipo de palabra es
     for mo in re.finditer(tok_regex, text):
         # el tipo de la palabra
@@ -63,20 +87,17 @@ def tokenize(text):
         # donde termina
         end = mo.end()
         if (kind == "IDENTIFIER" and value in keywords):
-            print("RESERVED", value, start, end)
             html_content = py_to_html(value, "RESERVED")
             html_file.write(html_content)
         elif (kind == "NEWLINE"):
-            print("NEWLINE", value, start, end)
             html_file.write("<br>")
         elif (kind == "WHITESPACE"):
-            print("WHITESPACE", value, start, end)
             html_file.write("&nbsp;")
         else:
-            print(kind, value, start, end)
             htmls_content = py_to_html(value, kind)
             html_file.write(htmls_content)
 
 
 tokenize(code)
 html_file.write("</p>")
+print("Html generado con exito!")
