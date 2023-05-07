@@ -1,32 +1,6 @@
 import re
-import webbrowser
-import time
 
-code = r'''
-def main():
-    x = 2
-    print(x)
-    y = True
-    z = "hola"
-    if z != y:
-        print("not equal")
-    # esto es un comentario
-a = {
-    "a": 1,
-    "b": 2,
-    "c": 3
-}
-if a["a"] >= 1:
-    print("greater")
-
-"""
-hola esto es otro comentario jalsjda
-"""
-
-
-
-
-'''
+code = open("code.txt", "r").read()
 
 
 def py_to_html(value, kind):
@@ -42,20 +16,19 @@ html_file.write("<link rel=" + "stylesheet" +
 html_file.write("<p>")
 
 
-def tokenize(text):
+def syntax(text):
     # palabras reservadas
-    keywords = {'if', 'raise', 'None', 'del', 'import',
-                'return', 'elif', 'in', 'try', 'and', 'else', 'is',
-                'while', 'as', 'except', 'lambda',
-                'with', 'assert', 'finally', 'nonlocal', 'yield',
-                'break', 'for', 'not', 'class', 'form', 'or',
-                'continue', 'global', 'pass', 'async', 'defer', 'finally',
-                'print', 'def', 'if', 'else'
-                }
+    reserved_words = {'if', 'raise', 'None', 'del', 'import',
+                      'return', 'elif', 'in', 'try', 'and', 'else', 'is',
+                      'while', 'as', 'except', 'lambda',
+                      'with', 'assert', 'finally', 'nonlocal', 'yield',
+                      'break', 'for', 'not', 'class', 'form', 'or',
+                      'continue', 'global', 'pass', 'async', 'defer', 'finally',
+                      'print', 'def', 'if', 'else'
+                      }
     # expresiones regulares
-    token_especifications = [
-        ('COMMENT', r'#.*'),
-        ('LONG_COMMENT', r''),
+    tokens = [
+        ('COMMENT', r'#\s.*'),
         ('NUMBER', r'\b\d+'),
         ('STRING', r'"[^"]*"|\'[^\']*\''),
         ('BOOL', r'True|False'),
@@ -75,18 +48,14 @@ def tokenize(text):
     ]
 
     # regex de busqueda con identificadores de cada regex
-    tok_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_especifications)
+    regex = '|'.join('(?P<%s>%s)' % pair for pair in tokens)
     # iteracion de cada palabra para encontrar que tipo de palabra es
-    for mo in re.finditer(tok_regex, text):
+    for mo in re.finditer(regex, text):
         # el tipo de la palabra
         kind = mo.lastgroup
         # el valor de la palabra
         value = mo.group()
-        # donde inicia de todo el texto
-        start = mo.start()
-        # donde termina
-        end = mo.end()
-        if (kind == "IDENTIFIER" and value in keywords):
+        if (kind == "IDENTIFIER" and value in reserved_words):
             html_content = py_to_html(value, "RESERVED")
             html_file.write(html_content)
         elif (kind == "NEWLINE"):
@@ -98,6 +67,6 @@ def tokenize(text):
             html_file.write(htmls_content)
 
 
-tokenize(code)
+syntax(code)
 html_file.write("</p>")
 print("Html generado con exito!")
